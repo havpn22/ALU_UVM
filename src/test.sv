@@ -15,6 +15,8 @@ class alu_test extends uvm_test;
                 `uvm_info("TEST", "Build Phase", UVM_MEDIUM)
 
                 env = alu_env::type_id::create("env", this);
+                uvm_config_db#(uvm_active_passive_enum)::set(this, "env.active_agent", "is_active", UVM_ACTIVE);
+                uvm_config_db#(uvm_active_passive_enum)::set(this, "env.passive_agent", "is_active", UVM_PASSIVE);
         endfunction
 
         virtual function void connect_phase(uvm_phase phase);
