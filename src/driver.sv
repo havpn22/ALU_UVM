@@ -6,13 +6,11 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
 
         virtual alu_interface vif;
 
-        uvm_analysis_port#(alu_sequence_item)drv_cov_port;
         //alu_sequence_item item;
 
         function new(string name = "alu_driver", uvm_component parent);
                 super.new(name, parent);
                 `uvm_info("DRIVER", "Inside constructor",UVM_MEDIUM)
-                drv_cov_port = new("driver_cov_port", this);
         endfunction
 
         function void build_phase(uvm_phase phase);
@@ -49,7 +47,6 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
                         //item.cmd.rand_mode(1);
                         if(item.inp_valid == 2'b11 || item.inp_valid == 2'b00) begin
                                 drive();
-                                drv_cov_port.write(item);
 
                                 `uvm_info(get_type_name(), $sformatf("Values from driver: mode = %0d, inp_valid = %0d, cmd = %0d, opa = %0d, opb = %0d, cin = %0d", item.mode, item.inp_valid, item.cmd, item.opa, item.opb, item.cin), UVM_MEDIUM)
                                 $display("");
@@ -62,7 +59,6 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
 
                         else if(item.mode == 1 && item.cmd inside {single_arith}) begin
                                 drive();
-                                drv_cov_port.write(item);
 
                                 `uvm_info(get_type_name(), $sformatf("Values from driver: mode = %0d, inp_valid = %0d, cmd = %0d, opa = %0d, opb = %0d, cin = %0d", item.mode, item.inp_valid, item.cmd, item.opa, item.opb, item.cin), UVM_MEDIUM)
                                 $display("");
@@ -71,7 +67,6 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
 
                         else if(item.mode == 0 && item.cmd inside {single_logic}) begin
                                 drive();
-                                drv_cov_port.write(item);
 
                                 `uvm_info(get_type_name(), $sformatf("Values from driver: mode = %0d, inp_valid = %0d, cmd = %0d, opa = %0d, opb = %0d, cin = %0d", item.mode, item.inp_valid, item.cmd, item.opa, item.opb, item.cin), UVM_MEDIUM)
                                 $display("");
@@ -80,7 +75,6 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
 
                         else begin
                                 drive();
-                                drv_cov_port.write(item);
 
                                 `uvm_info(get_type_name(), $sformatf("Values from driver: mode = %0d, inp_valid = %0d, cmd = %0d, opa = %0d, opb = %0d, cin = %0d", item.mode, item.inp_valid, item.cmd, item.opa, item.opb, item.cin), UVM_MEDIUM)
                                 $display("");
@@ -92,7 +86,6 @@ class alu_driver extends uvm_driver #(alu_sequence_item);
                                         repeat(1) @(vif.drv_cb);
                                         item.randomize();
                                         drive();
-                                        drv_cov_port.write(item);
 
                                         `uvm_info(get_type_name(), $sformatf("Values from driver: mode = %0d, inp_valid = %0d, cmd = %0d, opa = %0d, opb = %0d, cin = %0d", item.mode, item.inp_valid, item.cmd, item.opa, item.opb, item.cin), UVM_MEDIUM)
                                         $display("");
