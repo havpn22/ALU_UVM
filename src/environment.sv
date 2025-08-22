@@ -2,7 +2,8 @@ class alu_env extends uvm_env;
 
         `uvm_component_utils(alu_env)
 
-        alu_agent agent;
+        alu_agent active_agent;
+        alu_agent passive_agent;
         alu_scoreboard scoreboard;
         alu_coverage coverage;
 
@@ -15,7 +16,8 @@ class alu_env extends uvm_env;
                 super.build_phase(phase);
                 `uvm_info("ENVI", "Build Phase", UVM_MEDIUM)
 
-                agent = alu_agent::type_id::create("agent", this);
+                active_agent = alu_agent::type_id::create("active_agent", this);
+                passive_agent = alu_agent::type_id::create("passive_agent", this);
                 scoreboard = alu_scoreboard::type_id::create("scoreboard", this);
                 coverage = alu_coverage::type_id::create("coverage", this);
         endfunction
@@ -24,9 +26,9 @@ class alu_env extends uvm_env;
                 super.connect_phase(phase);
                 `uvm_info("ENVI", "Connect Phase", UVM_MEDIUM)
 
-                agent.mon.mon_score_port.connect(scoreboard.scoreboard_imp);
+                active_agent.mon.mon_score_port.connect(scoreboard.scoreboard_imp);
 
-                agent.drv.drv_cov_port.connect(coverage.coverage_drv);
+                active_agent.mon.mon_cov_port.connect(coverage.coverage_drv);
                 agent.mon.mon_cov_port.connect(coverage.coverage_mon);
         endfunction
 endclass
