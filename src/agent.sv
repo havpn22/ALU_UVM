@@ -16,15 +16,17 @@ class alu_agent extends uvm_agent;
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
                 `uvm_info("AGENT", "Build Phase", UVM_MEDIUM)
-                drv = alu_driver::type_id::create("drv", this);
-                mon = alu_monitor::type_id::create("mon", this);
+                if(get_is_active() == UVM_ACTIVE) begin
+                        drv = alu_driver::type_id::create("drv", this);
+                        mon = alu_monitor::type_id::create("mon", this);
+                end
                 seqr = alu_sequencer::type_id::create("seqr", this);
         endfunction
 
         function void connect_phase(uvm_phase phase);
                 super.connect_phase(phase);
                 `uvm_info("AGENT", "Connect Phase", UVM_MEDIUM)
-
-                drv.seq_item_port.connect(seqr.seq_item_export);
+                if(get_is_active() == UVM_ACTIVE)
+                        drv.seq_item_port.connect(seqr.seq_item_export);
         endfunction
 endclass
